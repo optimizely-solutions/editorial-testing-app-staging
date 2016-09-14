@@ -98,14 +98,16 @@ window.optimizelyTemplateTool = {
             }
         });
 
+        //Submit happens
         $('#step_experiment form').submit(function(e) {
-
+            console.log('experiment submitted');
             optimizelyTemplateTool.spinner('Creating experiment…');
 
             e.preventDefault();
 
             // TODO: Clean up spaghetti code
 
+            //Create the experiment definition
             function createExperimentDefinition() {
 
                 // Create new experiment_definition object containing experiment, original and goals
@@ -119,9 +121,10 @@ window.optimizelyTemplateTool = {
                     "activation_mode": app_config.activation_mode
                 };
                 // Add variations based on formsets and replace variation-level placeholders with actual values (using JSON.stringify's replacer function)
-                $('#variation-level')
+                $('#variation-level li')
                     .each(function(index, element) {
-                        var variation = JSON.parse(JSON.stringify(app_config.variations[1], function(key, value) {
+                        console.log('index', index);
+                        var variation = JSON.parse(JSON.stringify(app_config.variations[index+1], function(key, value) {
                             if (typeof value === "string") {
                                 for (var key in app_config.placeholders.variation) {
                                     var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";
@@ -131,6 +134,8 @@ window.optimizelyTemplateTool = {
                             return value;
                         }));
 
+                        console.log('pushed variation');
+                        console.log(variation);
                         experiment_definition.variations.push(variation);
 
                     });
@@ -159,6 +164,7 @@ window.optimizelyTemplateTool = {
 
             var experiment_id = null;
 
+            //Creates an experiment
             function createExperiment(experiment_definition) {
 
                 optimizelyTemplateTool.spinner('Creating experiment…');
@@ -166,21 +172,29 @@ window.optimizelyTemplateTool = {
 
                 optly.post("projects/" + app_config.project_id + '/experiments', experiment_definition.experiment, function(experiment) {
                     experiment_id = experiment.id;
-                    console.log('experiment definition:', experiment_definition);
+                    console.log('experiment created: ');
+                    console.log(experiment.variation_ids);
                     updateVariations(experiment, experiment_definition);
                     addGoals(experiment, experiment_definition);
                 });
             }
 
+            //Updates the variations of the experiment
             function updateVariations(experiment, experiment_definition) {
 
                 optimizelyTemplateTool.spinner('Adding variations…');
 
                 for (var i = 0; i < experiment_definition.variations.length; i++) {
 
+                    console.log('loop updating variation', i);
                     if (i < experiment.variation_ids.length) {
+                        console.log('updating variation', i);
+                        var weight = Math.round((100.00 / experiment_definition.variations.length) * 100);
+                        experiment_definition.variations[i].weight = weight;
                         optly.put('variations/' + experiment.variation_ids[i], experiment_definition.variations[i], function() {});
                     } else {
+                        var weight = Math.round((100.00 / experiment_definition.variations.length) * 100);
+                        experiment_definition.variations[i].weight = weight;
                         optly.post('experiments/' + experiment.id + '/variations', experiment_definition.variations[i], function() {});
                     }
 
@@ -188,6 +202,7 @@ window.optimizelyTemplateTool = {
 
             }
 
+            //Adds the goals to the experiment
             function addGoals(experiment, experiment_definition) {
                 // TO DO because of BUG-2364, the primary goal is not always set correctly
 
@@ -268,8 +283,6 @@ window.optimizelyTemplateTool = {
                         optly.put("experiments/" + experiment_id, settings, function(e) {});
                     }
                 }, 300);
-
-
 
             }
 

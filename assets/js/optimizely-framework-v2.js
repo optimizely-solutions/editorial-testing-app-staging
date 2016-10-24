@@ -8,21 +8,15 @@ Finally, we keep track of how many requests are outstanding so we can tell when 
 
 OptimizelyAPI = function(auth) {
     this.outstandingRequests = 0;
-
-    if (typeof auth.api_key !== 'undefined') {
-        this.auth_mode = 'api_key';
-        this.token = auth.api_key;
+    this.auth_mode = 'oauth';
+    this.client_id = auth.oauth_client_id;
+    this.token = this.extractToken(document.location.hash);
+    if (this.token) {
+        // Remove token from URI
+        document.location.hash = "";
     } else {
-        this.auth_mode = 'oauth';
-        this.client_id = auth.oauth_client_id;
-        this.token = this.extractToken(document.location.hash);
-        if (this.token) {
-            // Remove token from URI
-            document.location.hash = "";
-        } else {
-            // If no OAuth token, redirect to auth endpoint
-            this.authorizeClient();
-        }
+        // If no OAuth token, redirect to auth endpoint
+        this.authorizeClient();
     }
 }
 

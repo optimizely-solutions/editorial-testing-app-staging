@@ -10,8 +10,7 @@ window.optimizelyTemplateTool = {
             var app_config = JSON.parse(app_config_string);
 
             var optly = new OptimizelyAPI({
-                auth_mode: app_config.api_key ? "api_key" : "oauth",
-                api_key: app_config.api_key,
+                password: app_config.password,
                 client_id: 7696655230
             });
         }

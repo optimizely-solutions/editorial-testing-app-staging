@@ -8,15 +8,26 @@ Finally, we keep track of how many requests are outstanding so we can tell when 
 
 OptimizelyAPI = function(auth) {
     this.outstandingRequests = 0;
-    this.auth_mode = 'oauth';
     this.client_id = auth.oauth_client_id;
+    this.password = auth.password;
     this.token = this.extractToken(document.location.hash);
     if (this.token) {
         // Remove token from URI
         document.location.hash = "";
+        //Save token to localstorage
+        if (window.localStorage) {
+            window.localStorage.setItem('bearer', JSON.stringify({toklen: this.token, time: (Math.floor(Date.now() / 1000)});
+        }
     } else {
-        // If no OAuth token, redirect to auth endpoint
-        this.authorizeClient();
+        //Check if token is in localstorage
+        if (window.localStorage) {
+            this.token = window.localStorage.getItem('bearer');
+        }
+        //No token found in localstorage, proceed to auth
+        if (!this.token){
+            // If no OAuth token, redirect to auth endpoint
+            this.authorizeClient();
+        }
     }
 }
 

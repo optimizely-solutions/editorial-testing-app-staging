@@ -20,17 +20,19 @@ OptimizelyAPI = function(auth) {
             var block = new Array(16);
             for(var i = 0; i < 16; i++)
               block[i] = 0x11 * i;
+            console.log(block);
 
             var key = new Array(32);
             for(var i = 0; i < 32; i++)
               key[i] = i;
+            console.log(key);
+            AES_ExpandKey(key);
+            console.log(key);
+            AES_Encrypt(block, key);
+            console.log(block);
+            AES_Done();
+            console.log(block);
 
-            console.log(AES_ExpandKey(key));
-            console.log(AES_Encrypt(block, key));
-            console.log(key, block);
-            var encr = AES_Encrypt(block, key);
-            console.log(encr);
-            console.log(AES_Done());
             window.localStorage.setItem('bearer', JSON.stringify({token: this.token, time: (Math.floor(Date.now() / 1000))}));
         }
     } else {

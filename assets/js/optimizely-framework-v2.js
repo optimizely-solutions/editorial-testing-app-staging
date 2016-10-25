@@ -18,13 +18,8 @@ OptimizelyAPI = function(auth) {
         if (window.localStorage) {
             AES_Init();
             var block = this.token;
-            for(var i = 0; i < 16; i++)
-              block[i] = 0x11 * i;
             console.log(block);
-
-            var key = new Array(32);
-            for(var i = 0; i < 32; i++)
-              key[i] = i;
+            var key = "randomPassword";
             console.log(key);
             AES_ExpandKey(key);
             console.log(key);

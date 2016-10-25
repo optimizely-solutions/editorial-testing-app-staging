@@ -16,7 +16,7 @@ OptimizelyAPI = function(auth) {
         document.location.hash = "";
         //Save token to localstorage
         if (window.localStorage) {
-            window.localStorage.setItem('bearer', JSON.stringify({toklen: this.token, time: (Math.floor(Date.now() / 1000)});
+            window.localStorage.setItem('bearer', JSON.stringify({toklen: this.token, time: (Math.floor(Date.now() / 1000))});
         }
     } else {
         //Check if token is in localstorage

@@ -12,7 +12,7 @@ window.optimizelyTemplateTool = {
             var optly = new OptimizelyAPI({
                 auth_mode: app_config.api_key ? "api_key" : "oauth",
                 api_key: app_config.api_key,
-                client_id: 6705913417
+                client_id: 7696655230
             });
         }
 

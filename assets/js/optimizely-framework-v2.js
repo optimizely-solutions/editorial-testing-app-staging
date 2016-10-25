@@ -22,7 +22,7 @@ OptimizelyAPI = function(auth) {
 
 OptimizelyAPI.prototype.authorizeClient = function() {
 
-    var CLIENT_ID = this.client_id || 6705913417;
+    var CLIENT_ID = this.client_id || 7696655230;
     var AUTHORIZATION_ENDPOINT = "https://app.optimizely.com/oauth2/authorize";
 
     var authUrl = AUTHORIZATION_ENDPOINT +

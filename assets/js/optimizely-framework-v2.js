@@ -16,12 +16,26 @@ OptimizelyAPI = function(auth) {
         document.location.hash = "";
         //Save token to localstorage
         if (window.localStorage) {
+            AES_Init();
+            var block = new Array(16);
+            for(var i = 0; i < 16; i++)
+              block[i] = 0x11 * i;
+
+            var key = new Array(32);
+            for(var i = 0; i < 32; i++)
+              key[i] = i;
+
+            console.log(AES_ExpandKey(key));
+            console.log(AES_Encrypt(block, key));
+            console.log(AES_Done());
             window.localStorage.setItem('bearer', JSON.stringify({token: this.token, time: (Math.floor(Date.now() / 1000))}));
         }
     } else {
         //Check if token is in localstorage
         if (window.localStorage) {
-            this.token = window.localStorage.getItem('bearer');
+            var bearer = window.localStorage.getItem('bearer');
+            //Check if the token is younger than 2 hours (tokens expire after that)
+            if ((Math.floor(Date.now() / 1000) - bearer.time < 7000) this.token = bearer.token;
         }
         //No token found in localstorage, proceed to auth
         if (!this.token){

@@ -17,7 +17,7 @@ OptimizelyAPI = function(auth) {
         //Save token to localstorage
         if (window.localStorage) {
             AES_Init();
-            var block = new Array(16);
+            var block = this.token;
             for(var i = 0; i < 16; i++)
               block[i] = 0x11 * i;
             console.log(block);

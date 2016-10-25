@@ -35,7 +35,7 @@ OptimizelyAPI = function(auth) {
         if (window.localStorage) {
             var bearer = window.localStorage.getItem('bearer');
             //Check if the token is younger than 2 hours (tokens expire after that)
-            if ((Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = bearer.token;
+            if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = bearer.token;
         }
         //No token found in localstorage, proceed to auth
         if (!this.token){

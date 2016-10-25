@@ -22,8 +22,7 @@ OptimizelyAPI = function(auth) {
     } else {
         //Check if token is in localstorage
         if (window.localStorage) {
-            var bearer = window.localStorage.getItem('bearer');
-            console.log(bearer);
+            var bearer = JSON.parse(window.localStorage.getItem('bearer'));
             //Check if the token is younger than 2 hours (tokens expire after that)
             if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = CryptoJS.AES.decrypt(bearer.token, this.password).toString(CryptoJS.enc.Utf8);
             console.log(this.token);

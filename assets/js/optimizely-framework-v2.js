@@ -27,6 +27,9 @@ OptimizelyAPI = function(auth) {
 
             console.log(AES_ExpandKey(key));
             console.log(AES_Encrypt(block, key));
+            console.log(key, block);
+            var encr = AES_Encrypt(block, key);
+            console.log(encr);
             console.log(AES_Done());
             window.localStorage.setItem('bearer', JSON.stringify({token: this.token, time: (Math.floor(Date.now() / 1000))}));
         }

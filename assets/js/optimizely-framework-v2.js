@@ -47,6 +47,7 @@ OptimizelyAPI.prototype.authorizeClient = function() {
 }
 
 OptimizelyAPI.prototype.extractToken = function(hash) {
+    console.log(hash);
     var match = hash.match(/access_token=([\w-]+)/);
     return !!match && match[1];
 };

@@ -319,10 +319,10 @@ window.optimizelyTemplateTool = {
             // Check if JSON matches schema by looking up a few values
             // TODO: Should create and load a full schema definition
             try {
-                if (typeof config_obj.experiment.edit_url == "undefined" ||
-                    config_obj.variations.description == "undefined") {
-                    throw true;
-                }
+                // if (typeof config_obj.experiment.edit_url == "undefined" ||
+                //     config_obj.variations.description == "undefined") {
+                //     throw true;
+                // }
             } catch (e) {
                 throw new Error("Configuration is missing important information. Please check the template definition based on the boilerplate.");
             }

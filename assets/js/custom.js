@@ -155,7 +155,7 @@ window.optimizelyTemplateTool = {
                     return value;
                 }));
 
-
+                console.log(experiment_definition);
 
                 return experiment_definition;
 

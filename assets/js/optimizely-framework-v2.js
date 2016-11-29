@@ -16,7 +16,6 @@ OptimizelyAPI = function(auth) {
         document.location.hash = "";
         //Save token to localstorage
         if (window.localStorage) {
-            console.log(this.token);
             var encrypted = CryptoJS.AES.encrypt(this.token, this.password).toString();
             window.localStorage.setItem('bearer', JSON.stringify({token: encrypted, time: (Math.floor(Date.now() / 1000))}));
         }
@@ -26,7 +25,6 @@ OptimizelyAPI = function(auth) {
             var bearer = JSON.parse(window.localStorage.getItem('bearer'));
             //Check if the token is younger than 2 hours (tokens expire after that)
             if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = CryptoJS.AES.decrypt(bearer.token, this.password).toString(CryptoJS.enc.Utf8);
-            console.log(this.token);
         }
         //No token found in localstorage, proceed to auth
         if (!this.token){
@@ -61,7 +59,7 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
     var self = this;
 
     var options = {
-        url: "https://www.optimizelyapis.com/experiment/v1/" + endpoint,
+        url: "https://api.optimizely.com/v2/" + endpoint,
         type: type,
         dataType: 'json',
         contentType: 'application/json',
@@ -82,7 +80,7 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
             console.log('Error: ', textstatus);
             console.log(status);
 
-            if (response.status == 403 && window.confirm("Sorry! Your 10-minute session isn't valid anymore.")) {
+            if (response.status == 403 && window.confirm("Sorry! Requests failed. Please reauthenticate")) {
                 authorizeClient();
             }
         }

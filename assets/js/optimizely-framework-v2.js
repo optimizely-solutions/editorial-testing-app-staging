@@ -88,6 +88,7 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
 
     if (data) {
         options.data = JSON.stringify(data);
+        console.log(options.data);
         options.dataType = 'json';
     }
 

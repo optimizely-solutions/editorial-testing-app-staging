@@ -116,7 +116,7 @@ window.optimizelyTemplateTool = {
                 $('#variation-level li')
                     .each(function(index, element) {
                         console.log('index', index);
-                        var variation = JSON.parse(JSON.stringify(app_config.experiment.variations[index+1], function(key, value) {
+                        var variation = JSON.parse(JSON.stringify(app_config.experiment.variations[index], function(key, value) {
                             if (typeof value === "string") {
                                 for (var key in app_config.placeholders.variation) {
                                     var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";

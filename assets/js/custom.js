@@ -161,8 +161,8 @@ window.optimizelyTemplateTool = {
                 optimizelyTemplateTool.spinner('Creating experiment…');
                 // Create experiment
 
-                console.log(experiment_definition.experiment);
-                optly.post('experiments', experiment_definition.experiment, function(experiment) {
+                console.log(experiment_definition);
+                optly.post('experiments', experiment_definition, function(experiment) {
                     experiment_id = experiment.id;
                     console.log('experiment created: ');
                     console.log(experiment.variation_ids);

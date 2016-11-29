@@ -110,7 +110,7 @@ window.optimizelyTemplateTool = {
             function createExperimentDefinition() {
 
                 // Create new experiment_definition object containing experiment, original and goals
-                var experiment_definition = app_config.experiment,
+                var experiment_definition = app_config.experiment;
 
                 // Add variations based on formsets and replace variation-level placeholders with actual values (using JSON.stringify's replacer function)
                 $('#variation-level li')

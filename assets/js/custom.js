@@ -127,7 +127,7 @@ window.optimizelyTemplateTool = {
                         }));
 
                         console.log('pushed variation');
-                        experiment_definition.variations[index+1] = variation;
+                        experiment_definition.variations[index] = variation;
 
                     });
 

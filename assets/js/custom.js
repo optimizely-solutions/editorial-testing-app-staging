@@ -110,20 +110,13 @@ window.optimizelyTemplateTool = {
             function createExperimentDefinition() {
 
                 // Create new experiment_definition object containing experiment, original and goals
-                var experiment_definition = {
-                    "experiment": app_config.experiment,
-                    "variations": [
-                        app_config.variations[0]
-                    ],
-                    "goals": app_config.goals,
-                    "conditional_code": app_config.conditional_code,
-                    "activation_mode": app_config.activation_mode
-                };
+                var experiment_definition = app_config.experiment,
+
                 // Add variations based on formsets and replace variation-level placeholders with actual values (using JSON.stringify's replacer function)
                 $('#variation-level li')
                     .each(function(index, element) {
                         console.log('index', index);
-                        var variation = JSON.parse(JSON.stringify(app_config.variations[index+1], function(key, value) {
+                        var variation = JSON.parse(JSON.stringify(app_config.experiment.variations[index+1], function(key, value) {
                             if (typeof value === "string") {
                                 for (var key in app_config.placeholders.variation) {
                                     var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";
@@ -134,8 +127,7 @@ window.optimizelyTemplateTool = {
                         }));
 
                         console.log('pushed variation');
-                        console.log(variation);
-                        experiment_definition.variations.push(variation);
+                        experiment_definition.variations[index+1] = variation;
 
                     });
 
@@ -169,7 +161,7 @@ window.optimizelyTemplateTool = {
                 optimizelyTemplateTool.spinner('Creating experiment…');
                 // Create experiment
 
-                optly.post("projects/" + app_config.project_id + '/experiments', experiment_definition.experiment, function(experiment) {
+                optly.post('/experiments', experiment_definition.experiment, function(experiment) {
                     experiment_id = experiment.id;
                     console.log('experiment created: ');
                     console.log(experiment.variation_ids);

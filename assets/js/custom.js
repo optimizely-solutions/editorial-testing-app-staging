@@ -1,4 +1,4 @@
-(function(){console.log("Version 2.4")})();
+(function(){console.log("Version 2.5")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -143,6 +143,16 @@ window.optimizelyTemplateTool = {
                 });
             }
 
+            function publishExperiment(exp){
+                return new Promise(function(resolve, reject){
+                    optimizelyTemplateTool.spinner('Starting Experiment…');
+                    // Start experiment
+                    optly.patch("experiments/" + exp.id + "?action=start", {}, function(experiment) {
+                        resolve(experiment);
+                    });
+                });
+            }
+
             //Creates the pages required for the headline tests
             function createPages(final_config){
                 return new Promise(function(resolve, reject){
@@ -173,11 +183,13 @@ window.optimizelyTemplateTool = {
             })
             .then(function(event){
                 final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "session"}];
-
                 return createExperiment(final_config.experiment);
             })
-            .then(function(res){
-                console.log('experiment created');
+            .then(function(exp){
+                return publishExperiment(exp);
+            })
+            .done(function(res){
+                console.log("Experiment Created and Started");
             });
 
             e.preventDefault();

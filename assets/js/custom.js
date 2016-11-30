@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.0")})();
+(function(){console.log("Version 1.1")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -155,7 +155,7 @@ window.optimizelyTemplateTool = {
 
             }
 
-            var experiment_id = null;
+            // var experiment_id = null;
 
             //Creates an experiment
             function createExperiment(experiment_definition) {
@@ -167,122 +167,13 @@ window.optimizelyTemplateTool = {
                 optly.post('experiments', experiment_definition, function(experiment) {
                     experiment_id = experiment.id;
                     console.log('experiment created: ');
-                    // console.log(experiment.variation_ids);
-                    // updateVariations(experiment, experiment_definition);
-                    // addGoals(experiment, experiment_definition);
                 });
-            }
-
-            //Updates the variations of the experiment
-            function updateVariations(experiment, experiment_definition) {
-
-                optimizelyTemplateTool.spinner('Adding variations…');
-
-                for (var i = 0; i < experiment_definition.variations.length; i++) {
-
-                    console.log('loop updating variation', i);
-                    if (i < experiment.variation_ids.length) {
-                        console.log('updating variation', i);
-                        var weight = Math.round((100.00 / experiment_definition.variations.length) * 100);
-                        experiment_definition.variations[i].weight = weight;
-                        optly.put('variations/' + experiment.variation_ids[i], experiment_definition.variations[i], function() {});
-                    } else {
-                        var weight = Math.round((100.00 / experiment_definition.variations.length) * 100);
-                        experiment_definition.variations[i].weight = weight;
-                        optly.post('experiments/' + experiment.id + '/variations', experiment_definition.variations[i], function() {});
-                    }
-
-                }
-
-            }
-
-            //Adds the goals to the experiment
-            function addGoals(experiment, experiment_definition) {
-                // TO DO because of BUG-2364, the primary goal is not always set correctly
-
-                optimizelyTemplateTool.spinner('Adding goals…');
-
-                // remove engagement goal
-                optly.get("projects/" +app_config.project_id +"/goals", function(goals) {
-                    for (var key in goals) {
-                      goal = goals[key];
-                      var new_experiment_ids = [];
-                      if (goal.title == 'Engagement') {
-                        for (i = 0; i < goal.experiment_ids.length; i++) {
-                            if (goal.experiment_ids[i] != experiment_id) {
-                                new_experiment_ids.push(goal.experiment_ids[i]);
-                            }
-                        }
-                        update_experimentids = {
-                            "experiment_ids": new_experiment_ids
-                        };
-                        optly.put("goals/" +goal.id, update_experimentids, function() {});
-                      }
-                    }
-                });
-
-                // primary goal is first defined goal in the list
-                var primary_goal_event_name = experiment_definition.goals[0].title;
-                var goal_ids = [];
-                var primary_goal_id = "";
-
-                for (var i = 0; i < experiment_definition.goals.length; i++) {
-                    var new_goal_definition = experiment_definition.goals[i];
-                    if (typeof new_goal_definition === "number") {
-
-                        optly.get("goals/" + experiment_definition.goals[i], function(goal) {
-                            var index = goal.experiment_ids.indexOf(experiment_definition.goals[i]);
-                            goal.experiment_ids.splice(index, 1);
-
-                            goal.experiment_ids.push(experiment_id);
-                            update_experimentids = {
-                                "experiment_ids": goal.experiment_ids
-                            };
-
-                            goal_ids.push(goal.id.toString());
-
-                            optly.put("goals/" + goal.id, update_experimentids, function() {});
-                        });
-
-                    } else if (typeof new_goal_definition === "object") {
-
-                        optly.post("projects/" + app_config.project_id + "/goals/", new_goal_definition, function(goal) {
-
-                            goal_ids.push(goal.id.toString());
-
-                            goal.experiment_ids.push(experiment_id);
-                            update_experimentids = {
-                                "experiment_ids": goal.experiment_ids
-                            };
-
-                            optly.put("goals/" + goal.id, update_experimentids, function(goal) {
-                                // check if this is the primary goal
-                                if (goal.title == primary_goal_event_name) {
-                                    primary_goal_id = goal.id;
-                                }
-                            })
-                        });
-                    }
-                }
-
-                // because of https://optimizely.atlassian.net/browse/BUG-2364 we might need
-                // to manually update the list and then set the primary goal
-                var waitForExperiment = setInterval(function() {
-                    if (optly.outstandingRequests == 0) {
-                        clearInterval(waitForExperiment);
-                        settings = {
-                            "display_goal_order_lst": goal_ids,
-                            "primary_goal_id": primary_goal_id
-                        };
-                        optly.put("experiments/" + experiment_id, settings, function(e) {});
-                    }
-                }, 300);
-
             }
 
             var experiment_definition = createExperimentDefinition();
             createExperiment(experiment_definition);
             e.preventDefault();
+
             var waitForExperiment = setInterval(function() {
                 if (optly.outstandingRequests == 0) {
                     clearInterval(waitForExperiment);

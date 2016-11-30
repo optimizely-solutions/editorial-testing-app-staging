@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.8")})();
+(function(){console.log("Version 1.9")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -157,11 +157,10 @@ window.optimizelyTemplateTool = {
             function createEvents(event_config, page){
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Events…');
-                    //Set the page ID
-                    event_config.page_id = page.id;
                     // Create event
-                    optly.post('events', event_config, function(page) {
-                        resolve(page);
+
+                    optly.post("pages/" + page.id + "/events", event_config, function(page) {
+                        resolve(event);
                     });
                 });
             }

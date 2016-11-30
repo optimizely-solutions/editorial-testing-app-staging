@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.3")})();
+(function(){console.log("Version 1.4")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -134,13 +134,12 @@ window.optimizelyTemplateTool = {
             }
 
             //Creates an experiment
-            function createExperiment(experiment_definition) {
+            function createExperiment(final_config) {
 
                 optimizelyTemplateTool.spinner('Creating experiment…');
-                // Create experiment
 
-                console.log(experiment_definition);
-                optly.post('experiments', experiment_definition, function(experiment) {
+                // Create experiment
+                optly.post('experiments', final_config.experiment, function(experiment) {
                     experiment_id = experiment.id;
                     console.log('experiment created: ');
                 });

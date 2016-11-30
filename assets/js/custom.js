@@ -172,7 +172,7 @@ window.optimizelyTemplateTool = {
                 return createEvents(final_config.clickEvent, page);
             })
             .then(function(event){
-                final_config.experiment.metrics = "[{\"aggregator\": \"unique\", \"event_id\":" + event.id + ", \"scope\": \"session\"}]";
+                final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "session"}];
 
                 return createExperiment(final_config.experiment);
             })

@@ -1,4 +1,4 @@
-(function(){console.log("Version 2.6")})();
+(function(){console.log("Version 2.7")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -137,7 +137,7 @@ window.optimizelyTemplateTool = {
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Experiment…');
                     // Create experiment
-                    optly.post('experiments?action=publish', final_config, function(experiment) {
+                    optly.post('experiments?action=start', final_config, function(experiment) {
                         resolve(experiment);
                     });
                 });

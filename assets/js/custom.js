@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.6")})();
+(function(){console.log("Version 1.7")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -139,27 +139,32 @@ window.optimizelyTemplateTool = {
                     optimizelyTemplateTool.spinner('Creating experiment…');
                     // Create experiment
                     optly.post('experiments', final_config.experiment, function(experiment) {
-                        experiment_id = experiment.id;
-                        resolve("experiment created");
+                        resolve(experiment);
                     });
                 });
             }
 
+            //Creates the pages required for the headline tests
             function createPages(final_config){
-                optimizelyTemplateTool.spinner('Creating pages…');
-
-                // Create experiment
-                optly.post('pages', final_config.articlepage, function(page) {
-                    console.log('page created: ');
-                    console.log(page);
+                return new Promise(function(resolve, reject){
+                    optimizelyTemplateTool.spinner('Creating pages…');
+                    // Create experiment
+                    optly.post('pages', final_config.articlepage, function(page) {
+                        resolve(page);
+                    });
                 });
             }
 
             var final_config = replacePlaceholders();
-            // createPages(final_config);
-            createExperiment(final_config).then(function(res){
-                console.log(res);
+
+            createPages(final_config)
+            .then(function(res){
+                return createExperiment(final_config);
+            })
+            .then(function(res){
+                console.log('experiment created');
             });
+
             e.preventDefault();
 
             var waitForExperiment = setInterval(function() {

@@ -1,4 +1,4 @@
-(function(){console.log("Version 2.8")})();
+(function(){console.log("Version 2.9")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -172,13 +172,15 @@ window.optimizelyTemplateTool = {
             })
             .then(function(event){
                 final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "session"}];
-                final_config.experiment.variations.each(function(index, el) {
-                    if (el.actions){
-                        el.actions.each(function(index, ele) {
-                            ele.page_id = pageId;
-                        });
+
+                for (var i = 0; i < final_config.experiment.variations.length; i++) {
+                    if (final_config.experiment.variations[i].hasOwnProperty("actions")){
+                        for (var k = 0; k < final_config.experiment.variations[i].actions.length; k++) {
+                            final_config.experiment.variations[i].actions[k].page_id = pageId;
+                        }
                     }
-                });
+                }
+
                 console.log(final_config.experiment.variations);
 
                 return createExperiment(final_config.experiment);

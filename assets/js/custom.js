@@ -1,3 +1,5 @@
+(function(){console.log("Version 1.0")})();
+
 window.optimizelyTemplateTool = {
     initialize: function() {
         var app_config_string = optimizelyTemplateTool.appConfig.get();

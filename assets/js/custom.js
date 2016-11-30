@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.2")})();
+(function(){console.log("Version 1.3")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -108,59 +108,18 @@ window.optimizelyTemplateTool = {
 
             // TODO: Clean up spaghetti code
 
-            //Create the experiment definition
-            function createExperimentDefinition() {
-
-                // Create new experiment_definition object containing experiment, original and goals
-                var experiment_definition = app_config.experiment;
-
-                // Add variations based on formsets and replace variation-level placeholders with actual values (using JSON.stringify's replacer function)
-                $('#variation-level li')
-                    .each(function(index, element) {
-                        console.log('index', index);
-                        var variation = JSON.parse(JSON.stringify(app_config.experiment.variations[index], function(key, value) {
-                            if (typeof value === "string") {
-                                for (var key in app_config.placeholders.variation) {
-                                    var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";
-                                    var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
-                                }
-                            }
-                            return value;
-                        }));
-
-                        experiment_definition.variations[index] = variation;
-
-                    });
-
-                // Iterate through all strings and fill in experiment-level values for placeholders (using JSON.stringify's replaced function to iterate through all strings)
-
-                experiment_definition = JSON.parse(JSON.stringify(experiment_definition, function(key, value) {
-                    if (typeof value === "string") {
-                        for (var key in app_config.placeholders.experiment) {
-                            var fieldvalue = $("#experiment-level input[name=\"" + key + "\"]").val() ? $("#experiment-level input[name=\"" + key + "\"]").val() : "";
-                            var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
-                        }
-                        for (var key in app_config.placeholders.variation) {
-                            var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";
-                            var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
-                        }
-                    }
-                    return value;
-                }));
-
-                // console.log(experiment_definition);
-
-                return experiment_definition;
-            }
 
             function replacePlaceholders(){
 
                 app_config = JSON.parse(JSON.stringify(app_config, function(key, value) {
                     if (typeof value === "string") {
+                        //Replace values from experiment fields
                         for (var key in app_config.placeholders.experiment) {
                             var fieldvalue = $("#experiment-level input[name=\"" + key + "\"]").val() ? $("#experiment-level input[name=\"" + key + "\"]").val() : "";
                             var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
                         }
+
+                        //Replace values from variation fields
                         for (var key in app_config.placeholders.variation) {
                             var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";
                             var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
@@ -169,7 +128,7 @@ window.optimizelyTemplateTool = {
                     return value;
                 }));
 
-                console.log(app_config);
+                // console.log(app_config);
 
                 return app_config;
             }
@@ -189,8 +148,8 @@ window.optimizelyTemplateTool = {
 
             var newconfig = replacePlaceholders();
             console.log(newconfig);
-            var experiment_definition = createExperimentDefinition();
-            createExperiment(experiment_definition);
+            var final_config = replacePlaceholders();
+            createExperiment(final_config);
             e.preventDefault();
 
             var waitForExperiment = setInterval(function() {

@@ -72,7 +72,6 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
             }
         },
         success: function(response) {
-            console.log(response);
             self.outstandingRequests -= 1;
             callback(response);
         },
@@ -88,7 +87,6 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
 
     if (data) {
         options.data = JSON.stringify(data);
-        console.log(options.data);
         options.dataType = 'json';
     }
 

@@ -1,4 +1,4 @@
-(function(){console.log("Version 2.7")})();
+(function(){console.log("Version 2.8")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -127,8 +127,6 @@ window.optimizelyTemplateTool = {
                     return value;
                 }));
 
-                // console.log(app_config);
-
                 return app_config;
             }
 
@@ -138,16 +136,6 @@ window.optimizelyTemplateTool = {
                     optimizelyTemplateTool.spinner('Creating Experiment…');
                     // Create experiment
                     optly.post('experiments?action=start', final_config, function(experiment) {
-                        resolve(experiment);
-                    });
-                });
-            }
-
-            function publishExperiment(exp){
-                return new Promise(function(resolve, reject){
-                    optimizelyTemplateTool.spinner('Starting Experiment…');
-                    // Start experiment
-                    optly.patch("experiments/" + exp.id + "?action=start", {}, function(experiment) {
                         resolve(experiment);
                     });
                 });
@@ -168,7 +156,6 @@ window.optimizelyTemplateTool = {
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Events…');
                     // Create event
-
                     optly.post("pages/" + page.id + "/events", event_config, function(event) {
                         resolve(event);
                     });
@@ -176,17 +163,25 @@ window.optimizelyTemplateTool = {
             }
 
             var final_config = replacePlaceholders();
+            var pageId = null;
 
             createPages(final_config.articlePage)
             .then(function(page){
+                pageId = page.id;
                 return createEvents(final_config.clickEvent, page);
             })
             .then(function(event){
                 final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "session"}];
+                final_config.experiment.variations.each(function(index, el) {
+                    if (el.actions){
+                        el.actions.each(function(index, ele) {
+                            ele.page_id = pageId;
+                        });
+                    }
+                });
+                console.log(final_config.experiment.variations);
+
                 return createExperiment(final_config.experiment);
-            })
-            .then(function(exp){
-                return publishExperiment(exp);
             })
             .then(function(res){
                 console.log("Experiment Created and Started");

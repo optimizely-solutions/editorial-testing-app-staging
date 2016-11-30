@@ -165,9 +165,9 @@ window.optimizelyTemplateTool = {
                 optly.post('experiments', experiment_definition, function(experiment) {
                     experiment_id = experiment.id;
                     console.log('experiment created: ');
-                    console.log(experiment.variation_ids);
-                    updateVariations(experiment, experiment_definition);
-                    addGoals(experiment, experiment_definition);
+                    // console.log(experiment.variation_ids);
+                    // updateVariations(experiment, experiment_definition);
+                    // addGoals(experiment, experiment_definition);
                 });
             }
 

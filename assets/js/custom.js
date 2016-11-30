@@ -1,4 +1,4 @@
-(function(){console.log("Version 2.5")})();
+(function(){console.log("Version 2.6")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -188,7 +188,7 @@ window.optimizelyTemplateTool = {
             .then(function(exp){
                 return publishExperiment(exp);
             })
-            .done(function(res){
+            .then(function(res){
                 console.log("Experiment Created and Started");
             });
 

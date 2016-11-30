@@ -1,4 +1,4 @@
-(function(){console.log("Version 2.2")})();
+(function(){console.log("Version 2.3")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -159,7 +159,7 @@ window.optimizelyTemplateTool = {
                     optimizelyTemplateTool.spinner('Creating Events…');
                     // Create event
 
-                    optly.post("pages/" + page.id + "/events", event_config, function(page) {
+                    optly.post("pages/" + page.id + "/events", event_config, function(event) {
                         resolve(event);
                     });
                 });

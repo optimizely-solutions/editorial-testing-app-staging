@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.1")})();
+(function(){console.log("Version 1.2")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -128,7 +128,6 @@ window.optimizelyTemplateTool = {
                             return value;
                         }));
 
-                        console.log('pushed variation');
                         experiment_definition.variations[index] = variation;
 
                     });
@@ -149,13 +148,31 @@ window.optimizelyTemplateTool = {
                     return value;
                 }));
 
-                console.log(experiment_definition);
+                // console.log(experiment_definition);
 
                 return experiment_definition;
-
             }
 
-            // var experiment_id = null;
+            function replacePlaceholders(){
+
+                app_config = JSON.parse(JSON.stringify(app_config, function(key, value) {
+                    if (typeof value === "string") {
+                        for (var key in app_config.placeholders.experiment) {
+                            var fieldvalue = $("#experiment-level input[name=\"" + key + "\"]").val() ? $("#experiment-level input[name=\"" + key + "\"]").val() : "";
+                            var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
+                        }
+                        for (var key in app_config.placeholders.variation) {
+                            var fieldvalue = $("#variation-level input[name=\"" + key + "\"]").val() ? $("#variation-level input[name=\"" + key + "\"]").val() : "";
+                            var value = value.replace(new RegExp("{{" + key + "}}", 'g'), fieldvalue.replace(/\\([\s\S])|(")/g,"\\$1$2") );
+                        }
+                    }
+                    return value;
+                }));
+
+                console.log(app_config);
+
+                return app_config;
+            }
 
             //Creates an experiment
             function createExperiment(experiment_definition) {
@@ -170,6 +187,8 @@ window.optimizelyTemplateTool = {
                 });
             }
 
+            var newconfig = replacePlaceholders();
+            console.log(newconfig);
             var experiment_definition = createExperimentDefinition();
             createExperiment(experiment_definition);
             e.preventDefault();

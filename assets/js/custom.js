@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.9")})();
+(function(){console.log("Version 2.0")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -169,7 +169,11 @@ window.optimizelyTemplateTool = {
 
             createPages(final_config.articlePage)
             .then(function(page){
-                createEvents(final_config.clickEvent, page);
+                return createEvents(final_config.clickEvent, page);
+            })
+            .then(function(event){
+                final_config.experiment.metrics = "[{\"aggregator\": \"unique\", \"event_id\":" + event.id + ", \"scope\": \"session\"}]";
+
                 return createExperiment(final_config.experiment);
             })
             .then(function(res){

@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.7")})();
+(function(){console.log("Version 1.8")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -108,7 +108,6 @@ window.optimizelyTemplateTool = {
 
             // TODO: Clean up spaghetti code
 
-
             function replacePlaceholders(){
 
                 app_config = JSON.parse(JSON.stringify(app_config, function(key, value) {
@@ -136,9 +135,9 @@ window.optimizelyTemplateTool = {
             //Creates an experiment
             function createExperiment(final_config) {
                 return new Promise(function(resolve, reject){
-                    optimizelyTemplateTool.spinner('Creating experiment…');
+                    optimizelyTemplateTool.spinner('Creating Experiment…');
                     // Create experiment
-                    optly.post('experiments', final_config.experiment, function(experiment) {
+                    optly.post('experiments', final_config, function(experiment) {
                         resolve(experiment);
                     });
                 });
@@ -147,9 +146,21 @@ window.optimizelyTemplateTool = {
             //Creates the pages required for the headline tests
             function createPages(final_config){
                 return new Promise(function(resolve, reject){
-                    optimizelyTemplateTool.spinner('Creating pages…');
-                    // Create experiment
-                    optly.post('pages', final_config.articlepage, function(page) {
+                    optimizelyTemplateTool.spinner('Creating Pages…');
+                    // Create page
+                    optly.post('pages', final_config, function(page) {
+                        resolve(page);
+                    });
+                });
+            }
+
+            function createEvents(event_config, page){
+                return new Promise(function(resolve, reject){
+                    optimizelyTemplateTool.spinner('Creating Events…');
+                    //Set the page ID
+                    event_config.page_id = page.id;
+                    // Create event
+                    optly.post('events', event_config, function(page) {
                         resolve(page);
                     });
                 });
@@ -157,9 +168,10 @@ window.optimizelyTemplateTool = {
 
             var final_config = replacePlaceholders();
 
-            createPages(final_config)
-            .then(function(res){
-                return createExperiment(final_config);
+            createPages(final_config.articlePage)
+            .then(function(page){
+                createEvents(final_config.clickEvent, page);
+                return createExperiment(final_config.experiment);
             })
             .then(function(res){
                 console.log('experiment created');

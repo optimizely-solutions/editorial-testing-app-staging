@@ -1,4 +1,4 @@
-(function(){console.log("Version 1.4")})();
+(function(){console.log("Version 1.6")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -135,20 +135,31 @@ window.optimizelyTemplateTool = {
 
             //Creates an experiment
             function createExperiment(final_config) {
-
-                optimizelyTemplateTool.spinner('Creating experiment…');
-
-                // Create experiment
-                optly.post('experiments', final_config.experiment, function(experiment) {
-                    experiment_id = experiment.id;
-                    console.log('experiment created: ');
+                return new Promise(function(resolve, reject){
+                    optimizelyTemplateTool.spinner('Creating experiment…');
+                    // Create experiment
+                    optly.post('experiments', final_config.experiment, function(experiment) {
+                        experiment_id = experiment.id;
+                        resolve("experiment created");
+                    });
                 });
             }
 
-            var newconfig = replacePlaceholders();
-            console.log(newconfig);
+            function createPages(final_config){
+                optimizelyTemplateTool.spinner('Creating pages…');
+
+                // Create experiment
+                optly.post('pages', final_config.articlepage, function(page) {
+                    console.log('page created: ');
+                    console.log(page);
+                });
+            }
+
             var final_config = replacePlaceholders();
-            createExperiment(final_config);
+            // createPages(final_config);
+            createExperiment(final_config).then(function(res){
+                console.log(res);
+            });
             e.preventDefault();
 
             var waitForExperiment = setInterval(function() {

@@ -1,0 +1,84 @@
+{
+  "experiment": {
+    "project_id": 7937336466,
+    "variations": [
+      {
+        "archived": false,
+        "key": "original",
+        "name": "Original",
+        "weight": 3333
+      },
+      {
+        "actions": [
+          {
+            "changes": [
+              {
+                "type": "custom_code",
+                "value": "var utils = window[\"optimizely\"].get(\"utils\"); utils.waitForElement(\"#df-9-ieea97ed > div > h1 > a > span\").then(function(el){el.innerHTML = \"{{New Headline}}\"; });"
+              }
+            ],
+            "page_id": 7959640022
+          }
+        ],
+        "archived": false,
+        "key": "headline_variation_1",
+        "name": "{{New Headline}}",
+        "weight": 3333
+      },
+      {
+        "actions": [
+          {
+            "changes": [
+              {
+                "type": "custom_code",
+                "value": "var utils = window[\"optimizely\"].get(\"utils\"); utils.waitForElement(\"#df-9-ieea97ed > div > h1 > a > span\").then(function(el){el.innerHTML = \"{{New Headline 1}}\"; });"
+              }
+            ],
+            "page_id": 7959640022
+          }
+        ],
+        "archived": false,
+        "key": "headline_variation_2",
+        "name": "{{New Headline 1}}",
+        "weight": 3334
+      }
+    ],
+    "name": "[Editorial] - {{Article ID}} - {{Existing Headline}}",
+    "status": "running",
+    "type": "a/b",
+    "metrics": ""
+  },
+  "homepage_id": 7959640022,
+  "articlePage": {
+    "edit_url": "http://www.dr.dk/",
+    "name": "zz_headline tests - Page w/ Article - {{Article ID}} - {{Existing Headline}}",
+    "project_id": 7937336466,
+    "activation_code": "function pollingFn() {return document.querySelectorAll('#df-9-ieea97ed > div > h1 > a > span').length > 0; }",
+    "activation_type": "polling",
+    "archived": false,
+    "category": "article",
+    "conditions": "[\"and\", [\"or\", {\"match_type\": \"substring\", \"type\": \"url\", \"value\": \"dr.dk\"}]]",
+    "page_type": "url_set"
+  },
+  "clickEvent": {
+    "event_type": "click",
+    "name": "Click on Article {{Article ID}}",
+    "archived": false,
+    "category": "convert",
+    "config": {
+      "selector": "#df-9-ieea97ed > div > h1 > a > span"
+    },
+    "description": "string"
+  },
+  "placeholders": {
+      "experiment": {
+          "Article ID": "[0-9]{5,}",
+          "Existing Headline": ".+"
+      },
+      "variation": {
+          "New Headline": ".*",
+          "New Headline 1": ".*"
+      }
+  },
+  "password": "thilo2016"
+}

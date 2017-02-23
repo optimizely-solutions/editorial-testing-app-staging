@@ -16,7 +16,7 @@ OptimizelyAPI = function(auth) {
         document.location.hash = "";
         //Save token to localstorage
         if (window.localStorage) {
-            var encrypted = CryptoJS.AES.encrypt(this.token, this.password).toString();
+            var encrypted = this.token; //CryptoJS.AES.encrypt(this.token, this.password).toString();
             window.localStorage.setItem('bearer', JSON.stringify({token: encrypted, time: (Math.floor(Date.now() / 1000))}));
         }
     } else {
@@ -24,7 +24,7 @@ OptimizelyAPI = function(auth) {
         if (window.localStorage) {
             var bearer = JSON.parse(window.localStorage.getItem('bearer'));
             //Check if the token is younger than 2 hours (tokens expire after that)
-            if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = CryptoJS.AES.decrypt(bearer.token, this.password).toString(CryptoJS.enc.Utf8);
+            if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = bearer.token;//CryptoJS.AES.decrypt(bearer.token, this.password).toString(CryptoJS.enc.Utf8);
         }
         //No token found in localstorage, proceed to auth
         if (!this.token){

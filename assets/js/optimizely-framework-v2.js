@@ -69,7 +69,8 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
                 xhr.setRequestHeader('Token', self.token);
             } else {
                 xhr.setRequestHeader('Authorization', "Bearer " + self.token);
-                // xhr.setRequestHeader('Accept', "application/json");
+                xhr.setRequestHeader('Accept', "application/json");
+                xhr.setRequestHeader('Origin', "*");
             }
         },
         success: function(response) {

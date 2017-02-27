@@ -5,7 +5,7 @@ We store the API token in each instance of the object, and we can connect to mul
 
 Finally, we keep track of how many requests are outstanding so we can tell when all the calls are complete.
 */
-console.log("Framework Version 2.5");
+console.log("Framework Version 2.51");
 OptimizelyAPI = function(auth) {
     this.outstandingRequests = 0;
     this.client_id = auth.oauth_client_id;
@@ -17,7 +17,7 @@ OptimizelyAPI = function(auth) {
         //Save token to localstorage
         if (window.localStorage) {
             console.log(this.token);
-            var encrypted = CryptoJS.AES.encrypt(this.token, this.password).toString();
+            var encrypted = this.token; //CryptoJS.AES.encrypt(this.token, this.password).toString();
             window.localStorage.setItem('bearer', JSON.stringify({token: encrypted, time: (Math.floor(Date.now() / 1000))}));
         }
     } else {
@@ -25,7 +25,7 @@ OptimizelyAPI = function(auth) {
         if (window.localStorage) {
             var bearer = JSON.parse(window.localStorage.getItem('bearer'));
             //Check if the token is younger than 2 hours (tokens expire after that)
-            if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = CryptoJS.AES.decrypt(bearer.token, this.password).toString(CryptoJS.enc.Utf8);
+            if (bearer && (Math.floor(Date.now() / 1000) - bearer.time) < 7000) this.token = bearer.token; //CryptoJS.AES.decrypt(bearer.token, this.password).toString(CryptoJS.enc.Utf8);
         }
         //No token found in localstorage, proceed to auth
         if (!this.token){

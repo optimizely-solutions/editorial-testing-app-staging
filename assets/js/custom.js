@@ -1,4 +1,4 @@
-(function(){console.log("Tool Version 2.91")})();
+(function(){console.log("Tool Version 2.92")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -163,21 +163,25 @@ window.optimizelyTemplateTool = {
                 });
             }
 
+            //Start of execution
+
             var final_config = replacePlaceholders();
             var pageId = null;
 
             createPages(final_config.articlePage)
             .then(function(page){
                 pageId = page.id;
+
                 //for p7. If split config is present, split headline at doublespace
-                if (final_config.split){
+                if (final_config.hasOwnProperty("split") && final_config.split){
                     console.log("splitter found.");
-                    var str = final_config.placeholders.experiment["Existing Headline"].split("  ")[0];
+                    var str = $("#experiment-level input[name=\"Existing Headline\"]").val().split("  ")[0];
                     final_config.clickEvent.config.selector = ".teaser-caption span:contains(" + str + ")";
                 }
 
                 return createEvents(final_config.clickEvent, page);
             })
+            //Create Experiment
             .then(function(event){
                 final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "session"}];
 

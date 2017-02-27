@@ -1,4 +1,4 @@
-(function(){console.log("Tool Version 2.9")})();
+(function(){console.log("Tool Version 2.91")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -55,6 +55,7 @@ window.optimizelyTemplateTool = {
                         </li>');
                 }
             }
+
             for (var key in app_config.placeholders.variation) {
                 if (app_config.placeholders.variation.hasOwnProperty(key)) {
                     if (app_config.placeholders.variation[key].source == 'filepicker') {
@@ -168,6 +169,13 @@ window.optimizelyTemplateTool = {
             createPages(final_config.articlePage)
             .then(function(page){
                 pageId = page.id;
+                //for p7. If split config is present, split headline at doublespace
+                if (final_config.split){
+                    console.log("splitter found.");
+                    var str = final_config.placeholders.experiment["Existing Headline"].split("  ")[0];
+                    final_config.clickEvent.config.selector = ".teaser-caption span:contains(" + str + ")";
+                }
+
                 return createEvents(final_config.clickEvent, page);
             })
             .then(function(event){

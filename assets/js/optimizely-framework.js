@@ -17,7 +17,7 @@ OptimizelyAPI = function(auth) {
         this.client_id = auth.oauth_client_id;
         this.token = this.extractToken(document.location.hash);
         if (this.token) {
-            // Remove token from URI
+            // Remove token from URIx
             document.location.hash = "";
         } else {
             // If no OAuth token, redirect to auth endpoint
@@ -72,7 +72,7 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
             console.log('Error: ', textstatus);
             console.log(status);
 
-            if (response.status == 403 && window.confirm("Sorry! Your 10-minute session isn't valid anymore.")) {
+            if (response.status == 401 || response.status == 403 && window.confirm("Please re-login into Optimizely!")) {
                 authorizeClient();
             }
         }

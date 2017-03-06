@@ -5,7 +5,7 @@ We store the API token in each instance of the object, and we can connect to mul
 
 Finally, we keep track of how many requests are outstanding so we can tell when all the calls are complete.
 */
-console.log("Framework Version 2.52");
+console.log("Framework Version 2.6");
 OptimizelyAPI = function(auth) {
     this.outstandingRequests = 0;
     this.client_id = auth.oauth_client_id;
@@ -80,7 +80,8 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
             console.log('Error: ', textstatus);
             console.log(status);
 
-            if (response.status == 403 && window.confirm("Sorry! Requests failed. Please reauthenticate")) {
+            if (response.status == 403 || response.status == 401 && window.confirm("Sorry! Requests failed. Please relogin into Optimizely!")) {
+                window.localStorage.removeItem('bearer');
                 authorizeClient();
             }
         }

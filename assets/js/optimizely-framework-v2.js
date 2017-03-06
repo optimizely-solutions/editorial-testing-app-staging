@@ -82,7 +82,7 @@ OptimizelyAPI.prototype.call = function(type, endpoint, data, callback) {
 
             if (response.status == 403 || response.status == 401 && window.confirm("Sorry! Requests failed. Please relogin into Optimizely!")) {
                 window.localStorage.removeItem('bearer');
-                OptimizelyAPI.authorizeClient();
+                window.location.reload();
             }
         }
     }

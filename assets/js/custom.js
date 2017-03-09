@@ -51,7 +51,7 @@ window.optimizelyTemplateTool = {
                     $('#experiment-level')
                         .append('<li class="lego-form-field__item">\
                             <label class="lego-label" for="' + key + '">' + key + '</label>\
-                            <input name="' + key + '" type="text" class="lego-text-input" pattern="' + app_config.placeholders.experiment[key] + '">\
+                            <input name="' + key + '" type="text" class="lego-text-input" pattern="' + app_config.placeholders.experiment[key] + '" required>\
                         </li>');
                 }
             }
@@ -84,7 +84,7 @@ window.optimizelyTemplateTool = {
                         $('#variation-level')
                             .append('<li class="lego-form-field__item">\
                             <label class="lego-label" for="' + key + '">' + key + '</label>\
-                            <input name="' + key + '" type="text" class="lego-text-input" pattern="' + app_config.placeholders.variation[key] + '">\
+                            <input name="' + key + '" type="text" class="lego-text-input" pattern="' + app_config.placeholders.variation[key] + '" required>\
                         </li>');
                     }
                 }

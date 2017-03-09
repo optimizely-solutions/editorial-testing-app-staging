@@ -157,6 +157,7 @@ window.optimizelyTemplateTool = {
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Events…');
                     // Create event
+                    event_config.key += "_" + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
                     optly.post("pages/" + page.id + "/events", event_config, function(event) {
                         resolve(event);
                     });

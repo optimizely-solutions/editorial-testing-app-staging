@@ -150,7 +150,7 @@ window.optimizelyTemplateTool = {
 
                     /*if variation is empty or just spaces, do not add variation to experiment*/
                     for (var i = 0; i < final_config.variations.length; i++) {
-                        if (final_config.variations[i].name.trim().length < 3){
+                        if (final_config.variations[i].name.trim().length < 2){
                             final_config.variations.splice(i,1);
                         }
                     }

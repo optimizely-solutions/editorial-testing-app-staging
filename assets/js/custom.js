@@ -138,7 +138,7 @@ window.optimizelyTemplateTool = {
             function createExperiment(final_config) {
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Experiment…');
-                    console.log(final_config);
+                    console.log(JSON.stringify(final_config));
                     // Create experiment
                     optly.post('experiments?action=start', final_config, function(experiment) {
                         resolve(experiment);

@@ -1,4 +1,4 @@
-(function(){console.log("Tool Version 2.98")})();
+(function(){console.log("Tool Version 2.99")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -138,6 +138,18 @@ window.optimizelyTemplateTool = {
             function createExperiment(final_config) {
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Experiment…');
+
+                    /*if variation is empty or just spaces, do not add variation to experiment*/
+                    for (var i = 0; i < final_config.variations.length; i++) {
+                        if (final_config.variations[i].name.trim().length < 3){
+                            final_config.variations.splice(i,1);
+                        }
+                    }
+                    /*Recalculate traffic allocation for all variations*/
+                    for (var i = 0; i < final_config.variations.length; i++) {
+                        final_config.variations[i].weight = Math.round(10000/final_config.variations.length);
+                    }
+
                     console.log(JSON.stringify(final_config));
                     // Create experiment
                     optly.post('experiments?action=start', final_config, function(experiment) {

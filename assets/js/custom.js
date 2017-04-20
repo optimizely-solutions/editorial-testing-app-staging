@@ -81,11 +81,20 @@ window.optimizelyTemplateTool = {
                         $(el).detach();
 
                     } else {
-                        $('#variation-level')
+                        if (app_config.placeholders.variation[key] === "") {
+                            $('#variation-level')
                             .append('<li class="lego-form-field__item">\
-                            <label class="lego-label" for="' + key + '">' + key + '</label>\
-                            <input name="' + key + '" type="text" class="lego-text-input" pattern="' + app_config.placeholders.variation[key] + '" required>\
-                        </li>');
+                                <label class="lego-label" for="' + key + '">' + key + '</label>\
+                                <input name="' + key + '" type="text" class="lego-text-input">\
+                            </li>');
+                        } else {
+                            $('#variation-level')
+                            .append('<li class="lego-form-field__item">\
+                                <label class="lego-label" for="' + key + '">' + key + '</label>\
+                                <input name="' + key + '" type="text" class="lego-text-input" pattern="' + app_config.placeholders.variation[key] + '" required>\
+                            </li>');
+                        }
+
                     }
                 }
             }

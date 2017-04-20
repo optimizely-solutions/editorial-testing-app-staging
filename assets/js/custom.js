@@ -107,8 +107,11 @@ window.optimizelyTemplateTool = {
 
             e.preventDefault();
 
-            // TODO: Clean up spaghetti code
+            /* TODO: Clean up spaghetti code */
 
+            /*
+                Replace placeholders in the config with the actual values filled in the fields
+            */
             function replacePlaceholders(){
 
                 app_config = JSON.parse(JSON.stringify(app_config, function(key, value) {
@@ -135,6 +138,7 @@ window.optimizelyTemplateTool = {
             function createExperiment(final_config) {
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Experiment…');
+                    console.log(final_config);
                     // Create experiment
                     optly.post('experiments?action=start', final_config, function(experiment) {
                         resolve(experiment);
@@ -153,6 +157,7 @@ window.optimizelyTemplateTool = {
                 });
             }
 
+            // Creates the events
             function createEvents(event_config, page){
                 return new Promise(function(resolve, reject){
                     optimizelyTemplateTool.spinner('Creating Events…');

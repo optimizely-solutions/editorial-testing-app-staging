@@ -1,4 +1,4 @@
-(function(){console.log("Tool Version 2.99")})();
+(function(){console.log("Tool Version 3.01")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {

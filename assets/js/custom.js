@@ -1,4 +1,4 @@
-(function(){console.log("Tool Version 3.02")})();
+(function(){console.log("Tool Version 3.03")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -210,7 +210,7 @@ window.optimizelyTemplateTool = {
             })
             //Create Experiment
             .then(function(event){
-                final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "session"}];
+                final_config.experiment.metrics = [{"aggregator": "unique", "event_id": event.id, "scope": "visitor"}];
 
                 for (var i = 0; i < final_config.experiment.variations.length; i++) {
                     if (final_config.experiment.variations[i].hasOwnProperty("actions")){

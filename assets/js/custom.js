@@ -1,4 +1,4 @@
-(function(){console.log("Tool Version 3.04")})();
+(function(){console.log("Tool Version 3.05")})();
 
 window.optimizelyTemplateTool = {
     initialize: function() {
@@ -157,7 +157,7 @@ window.optimizelyTemplateTool = {
                     /*Recalculate traffic allocation for all variations*/
                     for (var i = 0; i < final_config.variations.length; i++) {
                         final_config.variations[i].weight = Math.round(10000/final_config.variations.length);
-                        if (final_config.variations.length === 3) final_config.variations[0].weight = "3334";
+                        if (final_config.variations.length === 3) final_config.variations[0].weight = 3334;
                     }
 
                     console.log(JSON.stringify(final_config));

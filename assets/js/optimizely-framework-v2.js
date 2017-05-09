@@ -5,7 +5,7 @@ We store the API token in each instance of the object, and we can connect to mul
 
 Finally, we keep track of how many requests are outstanding so we can tell when all the calls are complete.
 */
-console.log("Framework Version 2.65");
+console.log("Framework Version 2.66");
 OptimizelyAPI = function(auth) {
     this.outstandingRequests = 0;
     this.client_id = auth.oauth_client_id;
@@ -13,7 +13,7 @@ OptimizelyAPI = function(auth) {
     this.token = this.extractToken(document.location.hash);
     if (this.token) {
         // Remove token from URI
-        document.location.hash = "";
+        // document.location.hash = "";
         //Save token to localstorage
         if (window.localStorage) {
             console.log(this.token);

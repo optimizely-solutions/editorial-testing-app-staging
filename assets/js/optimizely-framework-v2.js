@@ -17,7 +17,7 @@ OptimizelyAPI = function(auth) {
         //Save token to localstorage
         if (window.localStorage) {
             console.log(this.token);
-            var encrypted = this.token; //CryptoJS.AES.encrypt(this.token, this.password).toString();
+            var encrypted = this.token.toString(); //CryptoJS.AES.encrypt(this.token, this.password).toString();
             window.localStorage.setItem('bearer', JSON.stringify({token: encrypted, time: (Math.floor(Date.now() / 1000))}));
         }
     } else {
